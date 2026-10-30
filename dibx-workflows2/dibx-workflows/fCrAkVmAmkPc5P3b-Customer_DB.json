@@ -1,0 +1,273 @@
+{
+  "name": "Customer DB",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Customer Form",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Name"
+            },
+            {
+              "fieldLabel": "Email"
+            },
+            {
+              "fieldLabel": "Customer Type",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "Monthly Retainer"
+                  },
+                  {
+                    "option": "Contractor"
+                  }
+                ]
+              }
+            },
+            {
+              "fieldLabel": "Phone"
+            },
+            {
+              "fieldLabel": "Age",
+              "fieldType": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.6,
+      "position": [
+        -448,
+        -352
+      ],
+      "id": "8e7a7938-0277-4307-af24-c28d2f43e073",
+      "name": "On form submission",
+      "webhookId": "5b41db95-34e2-4e1c-949b-41a4069401a9"
+    },
+    {
+      "parameters": {
+        "tableId": "Customer",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "name",
+              "fieldValue": "={{ $json.Name }}"
+            },
+            {
+              "fieldId": "email",
+              "fieldValue": "={{ $json.Email }}"
+            },
+            {
+              "fieldId": "phone",
+              "fieldValue": "={{ $json.Phone }}"
+            },
+            {
+              "fieldId": "age",
+              "fieldValue": "={{ $json.Age }}"
+            },
+            {
+              "fieldId": "customer_type",
+              "fieldValue": "={{ $json['Customer Type'] }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -208,
+        -352
+      ],
+      "id": "26f584ce-b612-4b04-87ea-e764a697e04c",
+      "name": "Create a row",
+      "credentials": {
+        "supabaseApi": {
+          "id": "Gu5XUpk3Lcl0bhhN",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.customer_type }}",
+                    "rightValue": "Monthly Retainer",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "20df81c0-66b8-4d4a-abcf-3e51ba948e4c"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "3a53f3ee-6186-4720-80fe-0451410d4c4e",
+                    "leftValue": "={{ $json.customer_type }}",
+                    "rightValue": "Contractor",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        16,
+        -352
+      ],
+      "id": "dc13ea8f-27b9-400f-8cba-b8d84820c35c",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C0C7HGBE76F",
+          "mode": "list",
+          "cachedResultName": "monthly-retainer"
+        },
+        "text": "=New Monthly Retainer Added.\nName: {{ $json.name }}\nEmail: {{ $json.email }}",
+        "otherOptions": {
+          "includeLinkToWorkflow": false
+        }
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.7,
+      "position": [
+        272,
+        -448
+      ],
+      "id": "37a2f3f8-d42b-45bb-b40d-f89f06af0324",
+      "name": "Montly Retainer",
+      "webhookId": "ace29e04-e27a-4ba2-b112-03c633b0cad5",
+      "credentials": {
+        "slackOAuth2Api": {
+          "id": "Q5p9oBSR8kqVAUbx",
+          "name": "Slack account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C0C7PJAQ7MG",
+          "mode": "list",
+          "cachedResultName": "contractor"
+        },
+        "text": "=New Contractor Added.\nName: {{ $json.name }}\nEmail: {{ $json.email }}",
+        "otherOptions": {
+          "includeLinkToWorkflow": false
+        }
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.7,
+      "position": [
+        272,
+        -240
+      ],
+      "id": "d36c2678-ac72-4297-a32f-c73c3f2b3cb7",
+      "name": "Contractor",
+      "webhookId": "ace29e04-e27a-4ba2-b112-03c633b0cad5",
+      "credentials": {
+        "slackOAuth2Api": {
+          "id": "Q5p9oBSR8kqVAUbx",
+          "name": "Slack account 2"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Create a row",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a row": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Montly Retainer",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Contractor",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "timeSavedMode": "fixed",
+    "errorWorkflow": "smgCo6ouJldAjLSq",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
+  },
+  "staticData": null,
+  "pinData": {},
+  "triggerCount": 0,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  }
+}

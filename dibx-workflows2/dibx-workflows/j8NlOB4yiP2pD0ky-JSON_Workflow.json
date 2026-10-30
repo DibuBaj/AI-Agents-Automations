@@ -1,0 +1,233 @@
+{
+  "name": "JSON Workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "37412154-590e-48ba-b307-a8943a580f1f",
+      "name": "When chat message received",
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.5,
+      "position": [
+        0,
+        0
+      ],
+      "webhookId": "55b2d6c8-dcde-4cb4-a3ee-40611c55fe09"
+    },
+    {
+      "parameters": {
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "<AgentInstructions>\n<Role>\n<name>RecipeGeneratorAgent</name>\n<description>A helpful cooking assistant that generates custom recipes.</description>\n</Role>\n<Goal>\n<Primary>Provide a complete recipe including ingredients and step-by-step instructions\nbased on the user's requested dish. </Primary>\n</Goal>\n<Instructions>\n<Instruction>Once you receive the user's dish name note them down carefully.\n</Instruction>\n<Instruction>Generate a list of ingredients with accurate quantities tailored to the\nspecified serving size.</Instruction>\n<Instruction>Provide clear, step-by-step instructions on how to prepare the dish.\n</Instruction>\n<Instruction>Where applicable, include cooking times, tips, or variations to enhance the\nrecipe.</Instruction>\n</Instructions>\n<Examples>\n<Example>\n<UserInput>\nButtor Chicken\n</UserInput>\n<UserOutput>\n{\n  \"name\": \"Classic Butter Chicken\",\n  \"description\": \"A classic North Indian dish featuring tender chicken simmered in a rich, creamy and slightly sweet tomato-based gravy.\",\n  \"ingredients\": \"• 700g boneless chicken thighs, cut into bite-sized pieces\\n• 1/2 cup full-fat plain yogurt\\n• 2 tablespoons tomato paste\\n• 1 teaspoon ground cumin\\n• 1 teaspoon ground coriander\\n• 1/2 teaspoon turmeric powder\\n• 1/2 teaspoon red chili powder\\n• 1 teaspoon garam masala\\n• 1 teaspoon salt\\n• 1/4 teaspoon black pepper\\n• 1 tablespoon lemon juice\\n• 1 tablespoon vegetable or canola oil\\n• 2 tablespoons butter, divided\\n• 1 medium onion, finely chopped\\n• 1/2 cup green bell pepper, finely chopped (optional)\\n• 3 cloves garlic, minced\\n• 1 tablespoon fresh ginger, grated\\n• 2 cups tomato puree or crushed tomatoes\\n• 2 tablespoons tomato paste\\n• 1/2 cup heavy cream\\n• 1/2 cup water\\n• 1 tablespoon sugar or honey\\n• 1/2 teaspoon ground cumin\\n• 1/2 teaspoon ground coriander\\n• 1/2 teaspoon garam masala\\n• 1/2 teaspoon smoked paprika\\n• Salt to taste\\n• 1 tablespoon fresh cilantro, chopped\\n• Fresh cream for garnish (optional)\\n• Crumbled feta cheese for garnish (optional)\",\n  \"instructions\": \"• Combine yogurt, tomato paste, spices, lemon juice, oil, salt and pepper in a large bowl. Add chicken and coat evenly. Marinate for at least 30 minutes, preferably overnight.\\n• Preheat oven to 200°C (400°F). Place chicken on a baking sheet and roast for 20–25 minutes until cooked through and slightly charred. Alternatively, cook in a skillet for 5–7 minutes per side until browned and cooked through.\\n• Heat 1 tablespoon butter in a saucepan. Add onion and sauté for 5–7 minutes until soft and translucent.\\n• Add green bell pepper, garlic and ginger. Sauté for another 2 minutes until fragrant.\\n• Add tomato puree, tomato paste, water, cumin, coriander, smoked paprika, sugar and salt. Simmer for 15–20 minutes until the sauce thickens.\\n• Blend and strain the gravy through a fine-mesh sieve for a smooth restaurant-style sauce, or leave it chunky if preferred.\\n• Reduce heat to low and add the remaining butter and heavy cream.\\n• Add the cooked chicken and gently stir to coat. Simmer for 5–10 minutes.\\n• Taste and adjust salt, sugar or cream as needed.\\n• Garnish with fresh cilantro and a swirl of cream. Serve hot with basmati rice, naan or roti.\",\n  \"tips\": \"• Marinate the chicken overnight for deeper flavour.\\n• Blend and strain the gravy for a smooth restaurant-style texture.\\n• Add extra chili powder or cayenne pepper if you prefer a spicier dish.\\n• For a vegan version, replace butter with coconut oil, yogurt with coconut yogurt and heavy cream with cashew cream.\\n• The dish can be frozen and reheated gently with a splash of cream or water.\"\n}</UserOutput>\n<Example>\n</Examples>\n</AgentInstructions>"
+        }
+      },
+      "id": "3a0144ef-e220-495a-8591-60407b356df8",
+      "name": "AI Agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        224,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "model": "openai/gpt-oss-120b",
+        "options": {
+          "maxTokensToSample": 8000
+        }
+      },
+      "id": "9d86098b-9040-4589-9e9e-500600846e7e",
+      "name": "Groq Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        160,
+        208
+      ],
+      "credentials": {
+        "groqApi": {
+          "id": "WeUTTjKS9ThNvBPM",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"name\": \"Classic Butter Chicken\",\n  \"description\": \"A classic North Indian dish featuring tender chicken simmered in a rich, creamy and slightly sweet tomato-based gravy.\",\n  \"ingredients\": \"• 700g boneless chicken thighs, cut into bite-sized pieces\\n• 1/2 cup full-fat plain yogurt\\n• 2 tablespoons tomato paste\\n• 1 teaspoon ground cumin\\n• 1 teaspoon ground coriander\\n• 1/2 teaspoon turmeric powder\\n• 1/2 teaspoon red chili powder\\n• 1 teaspoon garam masala\\n• 1 teaspoon salt\\n• 1/4 teaspoon black pepper\\n• 1 tablespoon lemon juice\\n• 1 tablespoon vegetable or canola oil\\n• 2 tablespoons butter, divided\\n• 1 medium onion, finely chopped\\n• 1/2 cup green bell pepper, finely chopped (optional)\\n• 3 cloves garlic, minced\\n• 1 tablespoon fresh ginger, grated\\n• 2 cups tomato puree or crushed tomatoes\\n• 2 tablespoons tomato paste\\n• 1/2 cup heavy cream\\n• 1/2 cup water\\n• 1 tablespoon sugar or honey\\n• 1/2 teaspoon ground cumin\\n• 1/2 teaspoon ground coriander\\n• 1/2 teaspoon garam masala\\n• 1/2 teaspoon smoked paprika\\n• Salt to taste\\n• 1 tablespoon fresh cilantro, chopped\\n• Fresh cream for garnish (optional)\\n• Crumbled feta cheese for garnish (optional)\",\n  \"instructions\": \"• Combine yogurt, tomato paste, spices, lemon juice, oil, salt and pepper in a large bowl. Add chicken and coat evenly. Marinate for at least 30 minutes, preferably overnight.\\n• Preheat oven to 200°C (400°F). Place chicken on a baking sheet and roast for 20–25 minutes until cooked through and slightly charred. Alternatively, cook in a skillet for 5–7 minutes per side until browned and cooked through.\\n• Heat 1 tablespoon butter in a saucepan. Add onion and sauté for 5–7 minutes until soft and translucent.\\n• Add green bell pepper, garlic and ginger. Sauté for another 2 minutes until fragrant.\\n• Add tomato puree, tomato paste, water, cumin, coriander, smoked paprika, sugar and salt. Simmer for 15–20 minutes until the sauce thickens.\\n• Blend and strain the gravy through a fine-mesh sieve for a smooth restaurant-style sauce, or leave it chunky if preferred.\\n• Reduce heat to low and add the remaining butter and heavy cream.\\n• Add the cooked chicken and gently stir to coat. Simmer for 5–10 minutes.\\n• Taste and adjust salt, sugar or cream as needed.\\n• Garnish with fresh cilantro and a swirl of cream. Serve hot with basmati rice, naan or roti.\",\n  \"tips\": \"• Marinate the chicken overnight for deeper flavour.\\n• Blend and strain the gravy for a smooth restaurant-style texture.\\n• Add extra chili powder or cayenne pepper if you prefer a spicier dish.\\n• For a vegan version, replace butter with coconut oil, yogurt with coconut yogurt and heavy cream with cashew cream.\\n• The dish can be frozen and reheated gently with a splash of cream or water.\"\n}"
+      },
+      "id": "a7a00b2c-0cc4-4263-a476-a118fb34a3d1",
+      "name": "Structured Output Parser",
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        432,
+        208
+      ]
+    },
+    {
+      "parameters": {
+        "authentication": "airtableOAuth2Api",
+        "operation": "create",
+        "base": {
+          "__rl": true,
+          "value": "appXOjjw6TlpOm8HF",
+          "mode": "list",
+          "cachedResultName": "Recipe Agent",
+          "cachedResultUrl": "https://airtable.com/appXOjjw6TlpOm8HF"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblrlBmWXApFfz49R",
+          "mode": "list",
+          "cachedResultName": "Table 1",
+          "cachedResultUrl": "https://airtable.com/appXOjjw6TlpOm8HF/tblrlBmWXApFfz49R"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "={{ $json.output.name }}",
+            "Description": "={{ $json.output.description }}",
+            "Ingredients": "={{ $json.output.ingredients }}",
+            "Instructions": "={{ $json.output.instructions }}",
+            "Tips": "={{ $json.output.tips }}"
+          },
+          "matchingColumns": [
+            "Recipe Details"
+          ],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Description",
+              "displayName": "Description",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Ingredients",
+              "displayName": "Ingredients",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Instructions",
+              "displayName": "Instructions",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Tips",
+              "displayName": "Tips",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "5ba1d8b2-4944-4b83-b995-4d9e287cd0fc",
+      "name": "Create a record",
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.2,
+      "position": [
+        592,
+        0
+      ],
+      "credentials": {
+        "airtableOAuth2Api": {
+          "id": "IPgGntVW2cFRCI5s",
+          "name": "Airtable account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Create a record",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "staticData": null,
+  "pinData": {},
+  "triggerCount": 0,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  }
+}
